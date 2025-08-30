@@ -3,13 +3,17 @@ import { Crown, LayoutDashboard, SquareKanban } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { NavUser } from "./nav-user"
+import { NavHeader } from "./nav-header"
 
 // Menu items.
 const items = [
@@ -32,7 +36,10 @@ const items = [
 
 export function AppSidebar() {
   return (
-    <Sidebar variant="inset">
+    <Sidebar variant="inset" collapsible="icon">
+      <SidebarHeader className="h-16">
+        <NavHeader />
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>
@@ -52,6 +59,9 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <NavUser />
+      </SidebarFooter>
     </Sidebar>
   )
 }

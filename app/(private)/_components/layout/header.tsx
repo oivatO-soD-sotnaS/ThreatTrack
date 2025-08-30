@@ -10,17 +10,21 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { usePathname } from 'next/navigation'
+import { SlashIcon } from 'lucide-react'
+import ScoreBadge from './user-score'
 
 export default function Header() {
     const path = (usePathname()).split('/').filter(path => !!path)
 
     return (
-        <header className='h-16 w-full bg-primary/60 flex items-center justify-between px-6'>
+        <header className='h-16 w-full bg-secondary flex items-center justify-between px-6'>
             <div className='flex items-center gap-2'>
                 <SidebarTrigger />
                 <Breadcrumb>
                     <BreadcrumbList>
-                        <BreadcrumbSeparator />
+                        <BreadcrumbSeparator>
+                            <SlashIcon />
+                        </BreadcrumbSeparator>
                         {path.map((p, index) => {
                             const link = path.filter((p, i) => i <= index).join("/")
                             return (
@@ -28,13 +32,16 @@ export default function Header() {
                                     <BreadcrumbItem>
                                         <BreadcrumbLink href={"/"+link}>{p}</BreadcrumbLink>
                                     </BreadcrumbItem>
-                                    <BreadcrumbSeparator />
+                                    <BreadcrumbSeparator>
+                                        <SlashIcon />
+                                    </BreadcrumbSeparator>
                                 </React.Fragment>
                             )}
                         )}
                     </BreadcrumbList>
-                    </Breadcrumb>
+                </Breadcrumb>
             </div>
+            <ScoreBadge />
         </header>
     )
 }

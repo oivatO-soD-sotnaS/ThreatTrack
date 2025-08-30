@@ -15,7 +15,7 @@ export default function ForbiddenPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center gap-4">
-          <Link href="/" className="w-full">
+          <Link href="/sign-in" className="w-full">
             <Button variant="outline" size={'lg'} className="w-full">Entrar</Button>
           </Link>
         </CardContent>

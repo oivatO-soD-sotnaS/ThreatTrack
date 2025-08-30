@@ -1,9 +1,9 @@
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
-import { AppSidebar } from "./_components/app-sidebar"
+import { AppSidebar } from "./_components/layout/app-sidebar"
 import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
 import { forbidden } from "next/navigation"
-import Header from "./_components/header"
+import Header from "./_components/layout/header"
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
     const session = await auth.api.getSession({
@@ -15,7 +15,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
     return (
         <SidebarProvider>
             <AppSidebar />
-            <SidebarInset className="bg-secondary overflow-hidden">
+            <SidebarInset className="overflow-hidden bg-card">
                 <main>
                     <Header />
                     {children}
