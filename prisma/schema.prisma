@@ -1,0 +1,168 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id            String    @id
+  name          String
+  email         String    @unique
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime
+  updatedAt     DateTime
+  accounts      Account[]
+  sessions      Session[]
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model vulnerability {
+  vulnerability_ids             String
+  sla_deadline                  String?
+  mitigated_by                  String?
+  severity_justification        String?
+  engagement                    String?
+  tags                          String?
+  publish_date                  String?
+  mitigation                    String?
+  cvssv3_score                  String?
+  sonarqube_issue               String?
+  review_requested_by_id        String?
+  defect_review_requested_by    String?
+  epss_percentile               String?
+  reporter                      String?
+  out_of_scope                  String?
+  false_p                       String?
+  is_mitigated                  String?
+  created                       String?
+  sast_source_file_path         String?
+  last_status_update            String?
+  risk_accepted                 String?
+  steps_to_reproduce            String?
+  verified                      String?
+  found_by                      String?
+  numerical_severity            String?
+  endpoints                     String?
+  active                        String?
+  cvssv3                        String?
+  url                           String?
+  product                       String?
+  sla_days_remaining            String?
+  epss_score                    String?
+  dynamic_finding               String?
+  test                          String?
+  severity                      String?
+  has_jira_group_issue          String?
+  pk                            String?
+  sla_start_date                String?
+  scanner_confidence            String?
+  service                       String?
+  sast_source_line              String?
+  payload                       String?
+  defect_review_requested_by_id String?
+  sast_sink_object              String?
+  Unnamed__92                   String? @map("Unnamed: 92")
+  violates_sla                  String?
+  Unnamed__91                   String? @map("Unnamed: 91")
+  Unnamed__93                   String? @map("Unnamed: 93")
+  duplicate_finding_id          String?
+  line                          String?
+  duplicate                     String?
+  under_defect_review           String?
+  test_id                       String?
+  last_reviewed_by_id           String?
+  last_reviewed_by              String?
+  cwe                           String?
+  hash_code                     String?
+  test_1                        String? @map("test.1")
+  planned_remediation_version   String?
+  effort_for_fixing             String?
+  unique_id_from_tool           String?
+  sonarqube_issue_id            String?
+  mitigated_by_id               String?
+  references                    String?
+  static_finding                String?
+  mitigated                     String?
+  impact                        String?
+  planned_remediation_date      String?
+  finding_group                 String?
+  engagement_id                 String?
+  review_requested_by           String?
+  has_jira_configured           String?
+  id                            String?
+  reporter_id                   String?
+  criticality                   BigInt?
+  component_name                String?
+  has_finding_group             String?
+  Unnamed__90                   String? @map("Unnamed: 90")
+  title                         String?
+  under_review                  String?
+  vuln_id_from_tool             String?
+  product_id                    String?
+  description                   String?
+  component_version             String?
+  sast_source_object            String?
+  has_jira_issue                String?
+  file_path                     String?
+  duplicate_finding             String?
+  sla_age                       String?
+  param                         String?
+  sla_expiration_date           String?
+  date                          String?
+  thread_id                     String?
+  nb_occurences                 String?
+  last_reviewed                 String?
+  vulnerability_id              String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+}
