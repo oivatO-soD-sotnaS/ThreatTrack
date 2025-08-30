@@ -1,7 +1,7 @@
 "use client"
 
 import { z } from "zod"
-import { Eye, EyeClosed, Twitter } from "lucide-react"
+import { Eye, EyeClosed, ShieldAlert } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -18,7 +18,6 @@ import {
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { useState } from "react"
-import { Checkbox } from "@/components/ui/checkbox"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { authClient } from "@/lib/auth-client"
@@ -27,7 +26,6 @@ import { Spinner } from "@/components/ui/kibo-ui/spinner"
 const formSchema = z.object({
   email: z.email(),
   password: z.string(),
-  rememberMe: z.boolean()
 })
 
 
@@ -43,7 +41,6 @@ export function SignInForm({}) {
     defaultValues: {
       email: "",
       password: "",
-      rememberMe: false
     },
   })
  
@@ -52,7 +49,6 @@ export function SignInForm({}) {
     const {
       email,
       password,
-      rememberMe
     } = values
     try {
       setIsloading(true)
@@ -60,7 +56,6 @@ export function SignInForm({}) {
       const {error} = await authClient.signIn.email({
         email,
         password,
-        rememberMe
       });
       if(error) throw new Error(error.message)
       router.push("/dashboard")
@@ -80,11 +75,11 @@ export function SignInForm({}) {
               className="flex flex-col items-center gap-2 font-medium"
             >
               <div className="flex size-8 items-center justify-center rounded-md">
-                <Twitter className="size-6 fill-primary" />
+                <ShieldAlert className="size-9 fill-foreground text-primary" />
               </div>
               <span className="sr-only">Threat Track</span>
             </div>
-            <h1 className="text-xl font-bold">Bem-vindo ao <span className="text-orange-400">Threat Track</span></h1>
+            <h1 className="text-xl">Bem-vindo ao <span className="text-primary font-extrabold">Threat Track</span></h1>
             <div className="text-center text-sm">
               Não possui uma conta?{" "}
               <Link href="/sign-up" className="underline underline-offset-4">
@@ -99,7 +94,7 @@ export function SignInForm({}) {
               <FormItem>
                 <FormLabel>E-mail</FormLabel>
                 <FormControl>
-                  <Input type="email" placeholder="ex@example.com" {...field} />
+                  <Input type="email" placeholder="ex@examplo.com" {...field} />
                 </FormControl>
                 <FormDescription>
                 </FormDescription>
@@ -137,29 +132,9 @@ export function SignInForm({}) {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="rememberMe"
-            render={({ field }) => (
-              <FormItem>
-                <div className="flex items-center space-x-2">
-                  <FormControl>
-                    <Checkbox 
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormLabel className="text-sm font-normal">
-                    Remember me?
-                  </FormLabel>
-                </div>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <Button disabled={isLoading} type="submit" className="w-full cursor-pointer">
             {isLoading && <Spinner variant="infinite"/>}
-            Sign-in
+            Entrar
           </Button>
         </form>
       </Form>
