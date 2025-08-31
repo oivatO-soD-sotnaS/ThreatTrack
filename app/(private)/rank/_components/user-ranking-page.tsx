@@ -43,6 +43,9 @@ export default function UserRankingPage({ users }: { users: User[] }) {
 
   return (
     <div className="min-h-[60vh] w-full px-4 py-6 md:px-8">
+      <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Ranking de colocação</h1>
+      <p className="text-muted-foreground mb-6">Ranking de especialistas que resolveram mais vulnerabilidades importantes.</p>
+
       <div className="mx-auto max-w-6xl">
         {/* header */}
         <Toolbar
