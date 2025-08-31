@@ -138,7 +138,6 @@ export default function Page() {
                 title="Índice de risco"
                 value={pct(mockKPIs.riskIndex)}
                 icon={<AlertTriangle className="w-5 h-5" />}
-                hint="média ponderada dos cards"
               />
             </FadeItem>
           </motion.div>
@@ -147,7 +146,7 @@ export default function Page() {
           <motion.div
             initial="hidden"
             animate="visible"
-            className="grid grid-cols-1 lg:grid-cols-2 gap-3"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-14"
           >
             <FadeItem index={0} className="chart-sm">
               <Section title="Saúde do risco (organizacional)">
@@ -170,7 +169,7 @@ export default function Page() {
             className="grid grid-cols-1 lg:grid-cols-3 gap-3"
           >
             <FadeItem index={0}>
-              <RiskGaugeRadial value={mockRiskGaugeValue} />
+              <RiskGaugeRadial value={63} target={40} maxSize={280} />
             </FadeItem>
             <FadeItem index={1}>
               <ResolvedVsNewArea data={mockResolvedVsNew} />

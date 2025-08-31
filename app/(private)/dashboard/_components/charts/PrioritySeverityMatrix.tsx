@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import {
   ChartContainer,
   ChartTooltip,
@@ -15,7 +14,9 @@ import {
   XAxis,
   YAxis,
   ZAxis,
+  ResponsiveContainer,
 } from "recharts"
+import { ChartCard } from "../ChartCard"
 
 type Row = {
   severity: "low" | "medium" | "high" | "critical"
@@ -40,50 +41,47 @@ export function PrioritySeverityMatrix({ data }: { data: Row[] }) {
     priority: d.priority,
   }))
   return (
-    <Card className="bg-card/80">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-sm">
-          Matriz Prioridade × Severidade
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <ChartContainer config={config} className="min-h-[220px] w-full">
-          <ScatterChart margin={{ left: 8, right: 8 }}>
-            <CartesianGrid stroke="hsl(var(--border))" />
-            <XAxis
-              type="number"
-              dataKey="x"
-              tickFormatter={(v) =>
-                ["", "Low", "Medium", "High", "Critical"][v]
-              }
-              tickLine={false}
-              axisLine={false}
-            />
-            <YAxis
-              type="number"
-              dataKey="y"
-              tickFormatter={(v) =>
-                ["", "Baixa", "Moderada", "Alta", "Extrema"][v]
-              }
-              tickLine={false}
-              axisLine={false}
-            />
-            <ZAxis dataKey="z" range={[60, 220]} />
-            <ChartTooltip
-              content={
-                <ChartTooltipContent
-                  formatter={(v: any, name, { payload }) =>
-                    name === "z"
-                      ? `${v} cards`
-                      : `${payload.severity} / ${payload.priority}`
-                  }
-                />
-              }
-            />
-            <Scatter data={mapped} fill="var(--color-count)" />
-          </ScatterChart>
+    <ChartCard title="Matriz Prioridade × Severidade" height="lg">
+      <div className="chart-fill h-full">
+        <ChartContainer config={config} className="h-full w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <ScatterChart margin={{ left: 8, right: 8 }}>
+              <CartesianGrid stroke="hsl(var(--border))" />
+              <XAxis
+                type="number"
+                dataKey="x"
+                tickFormatter={(v) =>
+                  ["", "Low", "Medium", "High", "Critical"][v]
+                }
+                tickLine={false}
+                axisLine={false}
+              />
+              <YAxis
+                type="number"
+                dataKey="y"
+                tickFormatter={(v) =>
+                  ["", "Baixa", "Moderada", "Alta", "Extrema"][v]
+                }
+                tickLine={false}
+                axisLine={false}
+              />
+              <ZAxis dataKey="z" range={[60, 220]} />
+              <ChartTooltip
+                content={
+                  <ChartTooltipContent
+                    formatter={(v: any, name, { payload }) =>
+                      name === "z"
+                        ? `${v} cards`
+                        : `${payload.severity} / ${payload.priority}`
+                    }
+                  />
+                }
+              />
+              <Scatter data={mapped} fill="var(--color-count)" />
+            </ScatterChart>
+          </ResponsiveContainer>
         </ChartContainer>
-      </CardContent>
-    </Card>
+      </div>
+    </ChartCard>
   )
 }

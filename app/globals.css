@@ -121,6 +121,9 @@
   --shadow-lg: 0px 1px 3px 0px hsl(0 0% 0% / 0.17), 0px 4px 6px -1px hsl(0 0% 0% / 0.17);
   --shadow-xl: 0px 1px 3px 0px hsl(0 0% 0% / 0.17), 0px 8px 10px -1px hsl(0 0% 0% / 0.17);
   --shadow-2xl: 0px 1px 3px 0px hsl(0 0% 0% / 0.43);
+  --card-h-sm: 220px;
+  --card-h-md: 280px;
+  --card-h-lg: 340px;
 }
 .dark {
   --background: oklch(0.1822 0 0);
@@ -185,4 +188,13 @@
     @apply bg-background text-foreground;
     letter-spacing: var(--tracking-normal);
   }
+}
+
+.chart-fill .min-h-\[220px\],
+.chart-fill .min-h-\[240px\],
+.chart-fill .min-h-\[260px\],
+.chart-fill .min-h-\[280px\],
+.chart-fill .min-h-\[300px\] {
+  min-height: 0 !important;
+  height: 100% !important;
 }
