@@ -3,15 +3,12 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { CheckCircle, Clock, AlertCircle, User, Calendar, BarChart3 } from 'lucide-react';
-
-// Dados mockados para o gráfico de pizza
-const vulnerabilityData = [
-  { name: 'Concluído', value: 2 },
-  { name: 'Em Progresso', value: 2 },
-  { name: 'A Fazer', value: 15 },
-];
+import { useEffect, useState } from 'react';
+import { getAllInDevelopmentItems, getAllReadyItems, getAllToDoItems } from '@/server/kanban';
+import { Spinner } from '@/components/ui/kibo-ui/spinner';
+import { user } from '@/app/generated/prisma';
 
 const COLORS = ['#10b981', '#3b82f6', '#f59e0b'];
 
@@ -24,6 +21,62 @@ const teamWorkload = [
 ];
 
 export default function KanbanDashboard() {
+  const [kanbanData, setKanbanData] = useState({
+    todo: 0,
+    inDevlopment: 0,
+    ready: 0,
+  });
+
+  const vulnerabilityData = [
+    { name: 'Concluído', value: kanbanData.ready },
+    { name: 'Em Progresso', value: kanbanData.inDevlopment },
+    { name: 'A Fazer', value: kanbanData.todo },
+  ];
+
+  const [isPending, setIsPending] = useState<boolean>(false)
+
+   useEffect(() => {
+      const fetchData = async () => {
+        try {
+          setIsPending(true);
+          
+          // Fetch data from all three tables
+          const [todoItems, inDevItems, readyItems] = await Promise.all([
+            getAllToDoItems(),
+            getAllInDevelopmentItems(),
+            getAllReadyItems()
+          ]);
+          
+          setKanbanData({
+            inDevlopment:inDevItems.length,
+            ready: readyItems.length,
+            todo: todoItems.length
+          }) 
+          
+        } catch (error) {
+          console.error('Error fetching kanban data:', error);
+        } finally {
+          setIsPending(false);
+        }
+      };
+  
+      fetchData();
+    }, []);
+
+  if (isPending) {
+    return (
+      <div>
+        <div className='flex items-center gap-2 mb-6'>
+          <BarChart3 className="h-8 w-8 text-blue-400" />
+          <h1 className="text-3xl font-bold">Dashboard de Vulnerabilidades</h1>
+        </div>
+        <div className='flex justify-center'>
+          <Spinner variant='infinite' className='size-10'/>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen p-6">
       <div className="max-w-7xl mx-auto">
@@ -43,8 +96,7 @@ export default function KanbanDashboard() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold">1</div>
-              <p className="text-xs mt-1">nos últimos 7 dias</p>
+              <div className="text-3xl font-bold">{kanbanData.ready}</div>
             </CardContent>
           </Card>
           
@@ -58,8 +110,7 @@ export default function KanbanDashboard() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold">3</div>
-              <p className="text-xs mt-1">nos próximos 7 dias</p>
+              <div className="text-3xl font-bold">{kanbanData.todo}</div>
             </CardContent>
           </Card>
           
@@ -73,8 +124,7 @@ export default function KanbanDashboard() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold">2</div>
-              <p className="text-xs mt-1">tickets ativos</p>
+              <div className="text-3xl font-bold">{kanbanData.inDevlopment}</div>
             </CardContent>
           </Card>
           
@@ -88,8 +138,7 @@ export default function KanbanDashboard() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold">19</div>
-              <p className="text-xs mt-1">vulnerabilidades</p>
+              <div className="text-3xl font-bold">{kanbanData.todo + kanbanData.inDevlopment + kanbanData.ready}</div>
             </CardContent>
           </Card>
         </div>
@@ -148,7 +197,7 @@ export default function KanbanDashboard() {
                       outerRadius={90}
                       paddingAngle={2}
                       dataKey="value"
-                      label={({ name, percent }) => `${(percent * 100).toFixed(0)}%`}
+                      label={({ _, percent }) => `${(percent * 100).toFixed(0)}%`}
                       labelLine={false}
                     >
                       {vulnerabilityData.map((entry, index) => (
@@ -163,30 +212,20 @@ export default function KanbanDashboard() {
                     <Tooltip 
                       formatter={(value) => [`${value} vulnerabilidades`, '']}
                     />
-                    <Legend 
-                      layout="vertical" 
-                      verticalAlign="middle" 
-                      align="right"
-                      formatter={(value, entry, index) => (
-                        <span className="text-sm">
-                          {value}: {vulnerabilityData[index].value}
-                        </span>
-                      )}
-                    />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
               <div className="grid grid-cols-3 gap-4 mt-4 text-center">
                 <div className="p-3 rounded-lg">
-                  <div className="text-2xl font-bold text-green-700">2</div>
+                  <div className="text-2xl font-bold text-green-700">{kanbanData.ready}</div>
                   <div className="text-xs font-medium text-green-600">Concluído</div>
                 </div>
                 <div className="p-3 rounded-lg">
-                  <div className="text-2xl font-bold text-blue-700">2</div>
+                  <div className="text-2xl font-bold text-blue-700">{kanbanData.inDevlopment}</div>
                   <div className="text-xs font-medium text-blue-600">Em Progresso</div>
                 </div>
                 <div className="p-3 rounded-lg">
-                  <div className="text-2xl font-bold text-amber-700">15</div>
+                  <div className="text-2xl font-bold text-amber-700">{kanbanData.todo}</div>
                   <div className="text-xs font-medium text-amber-600">A Fazer</div>
                 </div>
               </div>

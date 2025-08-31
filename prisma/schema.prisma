@@ -82,87 +82,77 @@ model cpbr_vulnerability {
   sla_age             String?
   sla_expiration_date String?
   date                String?
-  vulnerability_id    String        @id(map: "vulnerability_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  BacklogItem         BacklogItem[]
-  KanbanItem          KanbanItem[]
+  vulnerability_id    String  @id(map: "vulnerability_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
 }
 
 model user {
-  id            String        @id
+  id            String    @id
   name          String
-  email         String        @unique
+  email         String    @unique
   emailVerified Boolean
   image         String?
   createdAt     DateTime
   updatedAt     DateTime
-  score         Int           @default(0)
-  BacklogItem   BacklogItem[]
-  KanbanItem    KanbanItem[]
+  score         Float     @db.Real
   accounts      Account[]
   sessions      Session[]
 }
 
-model KanbanColumn {
-  id    String       @id @default(cuid())
-  title String
-  order Int
-  items KanbanItem[]
-}
-
-model KanbanItem {
-  id              String             @id @default(cuid())
-  vulnerabilityId String             @db.Uuid
-  columnId        String
-  assigneeId      String?
-  createdAt       DateTime           @default(now())
-  updatedAt       DateTime           @updatedAt
-  assignee        user?              @relation(fields: [assigneeId], references: [id])
-  column          KanbanColumn       @relation(fields: [columnId], references: [id], onDelete: Cascade)
-  vulnerability   cpbr_vulnerability @relation(fields: [vulnerabilityId], references: [vulnerability_id], onDelete: Cascade)
-}
-
-model BacklogItem {
-  id              String             @id @default(cuid())
-  vulnerabilityId String             @db.Uuid
-  assigneeId      String?
-  createdAt       DateTime           @default(now())
-  updatedAt       DateTime           @updatedAt
-  assignee        user?              @relation(fields: [assigneeId], references: [id])
-  vulnerability   cpbr_vulnerability @relation(fields: [vulnerabilityId], references: [vulnerability_id], onDelete: Cascade)
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model teste {
-  duplicate_finding   String?
-  false_p             Boolean?
-  sla_expiration_date String?
-  out_of_scope        Boolean?
-  endpoints           String?
-  sla_start_date      String?
-  sla_deadline        String?
-  is_mitigated        Boolean?
-  active              Boolean?
-  numerical_severity  String?
-  product_id          BigInt?
-  publish_date        String?
-  product             String?
-  service             String?
-  date                String?
-  cvssv3_score        String?
-  nb_occurences       String?
-  description         String?
-  severity            String?
-  risk_accepted       Boolean?
-  scanner_confidence  String?
-  url                 String?
-  cvssv3              String?
-  violates_sla        String?
-  mitigation          String?
-  vulnerability_ids   String?
-  epss_score          String?
-  created             DateTime? @db.Timestamptz(6)
-  epss_percentile     String?
+model ict_vulnerability {
+  id BigInt @id @default(autoincrement())
+}
 
-  @@ignore
+model in_development_item {
+  id                Int               @id @default(autoincrement())
+  vulnerabilityId   String            @unique @db.Uuid
+  n8n_vulnerability n8n_vulnerability @relation(fields: [vulnerabilityId], references: [n8n_vulnerability_id])
+}
+
+model n8n_vulnerability {
+  vulnerability_ids    String?
+  sla_deadline         String?
+  engagement           String?
+  mitigation           String?
+  created              DateTime?            @db.Timestamptz(6)
+  found_by             String?
+  numerical_severity   String?
+  active               Boolean?
+  product              String?
+  sla_days_remaining   BigInt?
+  dynamic_finding      Boolean?
+  test                 String?
+  severity             String?
+  last_reviewed_by     String?
+  cwe                  BigInt?
+  hash_code            String?
+  references           String?
+  static_finding       Boolean?
+  engagement_id        BigInt?
+  id                   BigInt?
+  reporter_id          BigInt?
+  criticality          BigInt?
+  component_name       String?
+  title                String?
+  description          String?
+  component_version    String?
+  file_path            String?
+  sla_age              BigInt?
+  n8n_vulnerability_id String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  score                Float?
+  in_development_item  in_development_item?
+  ready_item           ready_item?
+  to_do_item           to_do_item?
+}
+
+model ready_item {
+  id                Int               @id @default(autoincrement())
+  vulnerabilityId   String            @unique @db.Uuid
+  n8n_vulnerability n8n_vulnerability @relation(fields: [vulnerabilityId], references: [n8n_vulnerability_id])
+}
+
+model to_do_item {
+  id                Int               @id @default(autoincrement())
+  vulnerabilityId   String            @unique @db.Uuid
+  n8n_vulnerability n8n_vulnerability @relation(fields: [vulnerabilityId], references: [n8n_vulnerability_id])
 }

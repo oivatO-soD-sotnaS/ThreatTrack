@@ -12,12 +12,12 @@ export const createToDoItem = async (vulnerabilityId: string) => {
 export const getToDoItem = async (id: number) => {
   return prisma.to_do_item.findUnique({
     where: { id },
-    include: { vulnerability: true },
+    include: { n8n_vulnerability: true },
   });
 };
 
 export const getAllToDoItems = async () => {
-  return prisma.to_do_item.findMany({ include: { vulnerability: true } });
+  return prisma.to_do_item.findMany({ include: { n8n_vulnerability: true } });
 };
 
 export const updateToDoItem = async (id: number, vulnerabilityId: string) => {
@@ -43,12 +43,12 @@ export const createInDevelopmentItem = async (vulnerabilityId: string) => {
 export const getInDevelopmentItem = async (id: number) => {
   return prisma.in_development_item.findUnique({
     where: { id },
-    include: { vulnerability: true },
+    include: { n8n_vulnerability: true },
   });
 };
 
 export const getAllInDevelopmentItems = async () => {
-  return prisma.in_development_item.findMany({ include: { vulnerability: true } });
+  return prisma.in_development_item.findMany({ include: { n8n_vulnerability: true } });
 };
 
 export const updateInDevelopmentItem = async (id: number, vulnerabilityId: string) => {
@@ -74,12 +74,12 @@ export const createReadyItem = async (vulnerabilityId: string) => {
 export const getReadyItem = async (id: number) => {
   return prisma.ready_item.findUnique({
     where: { id },
-    include: { vulnerability: true },
+    include: { n8n_vulnerability: true },
   });
 };
 
 export const getAllReadyItems = async () => {
-  return prisma.ready_item.findMany({ include: { vulnerability: true } });
+  return prisma.ready_item.findMany({ include: { n8n_vulnerability: true } });
 };
 
 export const updateReadyItem = async (id: number, vulnerabilityId: string) => {

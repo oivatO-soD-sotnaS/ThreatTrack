@@ -294,9 +294,9 @@ export const KanbanProvider = <
       return `Dragged the card "${name}" over the "${newColumn}" column`;
     },
     onDragEnd({ active, over }) {
-      const { name } = data.find((item) => item.id === active.id) ?? {};
       const newColumn = columns.find((column) => column.id === over?.id)?.name;
 
+      console.log(`Dropped the card "${name}" into the "${newColumn}" column`)
       return `Dropped the card "${name}" into the "${newColumn}" column`;
     },
     onDragCancel({ active }) {

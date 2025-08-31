@@ -213,8 +213,8 @@ export default function Page() {
 
       // --- Seleciona top 10 por criticality ---
       const priorityList = [...backlogVulnerabilities]
-        .sort((a, b) => Number(b.criticality ?? 0) - Number(a.criticality ?? 0))
-        .slice(0, 10);
+        .sort((a, b) => Number(b.score ?? 0) - Number(a.score ?? 0))
+        .slice(0, Math.floor(backlogVulnerabilities.length / 3));
 
       // --- Atualiza estados ---
       setColumns(prev => ({
