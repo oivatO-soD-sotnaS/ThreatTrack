@@ -82,60 +82,87 @@ model cpbr_vulnerability {
   sla_age             String?
   sla_expiration_date String?
   date                String?
-  vulnerability_id    String  @id(map: "vulnerability_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-
-  KanbanItem KanbanItem[]
-
-  BacklogItem BacklogItem[]
+  vulnerability_id    String        @id(map: "vulnerability_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  BacklogItem         BacklogItem[]
+  KanbanItem          KanbanItem[]
 }
 
 model user {
-  id            String    @id
+  id            String        @id
   name          String
-  email         String    @unique
+  email         String        @unique
   emailVerified Boolean
   image         String?
   createdAt     DateTime
   updatedAt     DateTime
+  score         Int           @default(0)
+  BacklogItem   BacklogItem[]
+  KanbanItem    KanbanItem[]
   accounts      Account[]
   sessions      Session[]
-  score         Int       @default(0)
-
-  KanbanItem KanbanItem[]
-
-  BacklogItem BacklogItem[]
 }
 
 model KanbanColumn {
-  id        String       @id @default(cuid())
-  title     String       // "A Fazer", "Em andamento", "Pronto"
-  order     Int          // posição da coluna
-  items     KanbanItem[]
+  id    String       @id @default(cuid())
+  title String
+  order Int
+  items KanbanItem[]
 }
 
 model KanbanItem {
   id              String             @id @default(cuid())
   vulnerabilityId String             @db.Uuid
+  columnId        String
+  assigneeId      String?
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+  assignee        user?              @relation(fields: [assigneeId], references: [id])
+  column          KanbanColumn       @relation(fields: [columnId], references: [id], onDelete: Cascade)
   vulnerability   cpbr_vulnerability @relation(fields: [vulnerabilityId], references: [vulnerability_id], onDelete: Cascade)
-
-  columnId  String
-  column    KanbanColumn @relation(fields: [columnId], references: [id], onDelete: Cascade)
-
-  assigneeId String?
-  assignee   user?       @relation(fields: [assigneeId], references: [id], onDelete: SetNull)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 model BacklogItem {
   id              String             @id @default(cuid())
   vulnerabilityId String             @db.Uuid
+  assigneeId      String?
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+  assignee        user?              @relation(fields: [assigneeId], references: [id])
   vulnerability   cpbr_vulnerability @relation(fields: [vulnerabilityId], references: [vulnerability_id], onDelete: Cascade)
+}
 
-  assigneeId String?  
-  assignee   user?       @relation(fields: [assigneeId], references: [id], onDelete: SetNull)
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model teste {
+  duplicate_finding   String?
+  false_p             Boolean?
+  sla_expiration_date String?
+  out_of_scope        Boolean?
+  endpoints           String?
+  sla_start_date      String?
+  sla_deadline        String?
+  is_mitigated        Boolean?
+  active              Boolean?
+  numerical_severity  String?
+  product_id          BigInt?
+  publish_date        String?
+  product             String?
+  service             String?
+  date                String?
+  cvssv3_score        String?
+  nb_occurences       String?
+  description         String?
+  severity            String?
+  risk_accepted       Boolean?
+  scanner_confidence  String?
+  url                 String?
+  cvssv3              String?
+  violates_sla        String?
+  mitigation          String?
+  vulnerability_ids   String?
+  epss_score          String?
+  created             DateTime? @db.Timestamptz(6)
+  epss_percentile     String?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  @@ignore
 }
