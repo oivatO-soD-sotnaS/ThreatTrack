@@ -1,0 +1,503 @@
+{
+  "name": "ThreatTrack",
+  "nodes": [
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {
+          "maxOutputTokens": 2048
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -384,
+        240
+      ],
+      "id": "d7efb93d-6a63-46fe-844f-bdfec4200577",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "vi87T69VYi7EOhz1",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash-001",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        112,
+        448
+      ],
+      "id": "d5125a5d-6668-4c99-a453-8412bb6cc999",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "vi87T69VYi7EOhz1",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-pro-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        400,
+        448
+      ],
+      "id": "82b5be5a-5e66-499a-b6d3-c48779d1fe54",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "vi87T69VYi7EOhz1",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-flash-8b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        816,
+        448
+      ],
+      "id": "64ec0ab6-eeac-48f0-97a6-7769603918c0",
+      "name": "Google Gemini Chat Model3",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "vi87T69VYi7EOhz1",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-pro",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1104,
+        448
+      ],
+      "id": "e8127ff0-a5f3-4f4d-a8b6-52e2b706ae7f",
+      "name": "Google Gemini Chat Model4",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "vi87T69VYi7EOhz1",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-flash-002",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -176,
+        448
+      ],
+      "id": "2a9ef752-c1d2-459d-8eb8-6b87d94ebffa",
+      "name": "Google Gemini Chat Model5",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "vi87T69VYi7EOhz1",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=\n\n\"n8n_vulnerability_id\":{{ $json.n8n_vulnerability_id }},\n    \"numerical_severity\":{{ $json.numerical_severity }},\n    \"severity\": {{ $json.severity }},\n    \"description\":{{ $json.description }},\n    \"sla_deadline\":{{ $json.sla_deadline }},\n    \"sla_days_remaining\":{{ $json.sla_days_remaining }},\n    \"sla_age\":{{ $json.sla_age }},\n    \"created\": {{ $json.created }},\n    \"active\":{{ $json.active }} ,\nVocê é o Agent Supervisor.\nObjetivo: calcular um score de prioridade (0–1) para um CVE chamando agentes colaboradores. CHAME OS AGENTS OBRIGATORIAMENTE\nE envie para ele     \"n8n_vulnerability_id\":{{ $json.n8n_vulnerability_id }},\n    \"numerical_severity\":{{ $json.numerical_severity }},\n    \"severity\": {{ $json.severity }},\n    \"description\":{{ $json.description }},\n    \"sla_deadline\":{{ $json.sla_deadline }},\n    \"sla_days_remaining\":{{ $json.sla_days_remaining }},\n    \"sla_age\":{{ $json.sla_age }},\n    \"created\": {{ $json.created }},\n    \"active\":{{ $json.active }} ,\n\nVocê é o Agent Supervisor. Sua função é chamar agentes colaboradores especializados, validar os retornos e calcular um score de prioridade (0–1) para um CVE. Ferramentas (você DEVE chamá-las) Os seguintes colaboradores estão disponíveis como ferramentas do n8n (use exatamente estes nomes de tool):\nFerramentas disponíveis (use estes nomes)\n\nseverity_specialist → entrada: numerical_severity, severity → saída: severity_weight ∈ [0,1]\n\nimpact_specialist → entrada: impact (se existir), description → saída: impact_weight ∈ [0,1]\n\nsla_specialist → entrada: sla_deadline, sla_days_remaining, sla_age, severity_weight → saída: sla_weight ∈ [0,1]\n\nage_specialist → entrada: created, active, severity_weight → saída: age_weight ∈ [0,1]\n\ninternet_specialist → entrada: description → saída: weight ∈ {0,1}\n\nPolítica de chamada de tool: tente chamar; se erro, tente 1 retry; se ainda assim falhar ou retornar valor inválido, aplique o fallback local abaixo.\n\nPesos (importâncias) padrão dos fatores\nseverity: 0.35\nimpact:   0.15\nsla:      0.20\nage:      0.10\ninternet: 0.20\n\n\n(Se pesos personalizados vierem na entrada do usuário, use-os; caso contrário, use os padrões.)\n\nValidação de valores\n\nUm valor é válido se é numérico em [0,1] (para internet, 0 ou 1). Valores ausentes/NaN/fora do intervalo → inválidos.\n\nFallbacks (cálculo local por fator)\n\nUse apenas os campos já presentes na entrada do usuário.\n\n1) Severidade técnica (severity_weight)\n\nSe numerical_severity parecer CVSS 0–10: severity_weight = clamp(numerical_severity/10, 0, 1).\n\nSe for escala 1–5 (S1–S5): mapear 1→0.05, 2→0.20, 3→0.50, 4→0.80, 5→1.00.\n\nSe vier apenas rótulo: None/Informational→0.00, Low→0.20, Medium→0.50, High→0.80, Critical→1.00.\n\nEm conflito (ex.: número 1–5 e rótulo L/M/H/C): use o maior.\n\nSe nada útil: severity_weight = 0.50.\n\n2) Impacto técnico (impact_weight)\n\nLeia impact (se houver) e/ou description para inferir CIA:\n\nConfidencialidade high se contiver termos como: data leak, information disclosure, credentials/tokens/secrets/keys, PII/PHI, session hijack, directory traversal (read), SSRF→metadata/credentials.\n\nIntegridade high se: arbitrary write/modify/tamper, SQL/command/code injection, file overwrite, privilege escalation.\n\nDisponibilidade high se: DoS/denial of service, crash, resource exhaustion, hang.\n\nSe impacto parcial → low; ausência → none.\n\nSinais especiais:\nrce (remote code execution) ⇒ C/I/A = high;\npriv_esc ⇒ pelo menos I=high (geralmente C também);\nunauthenticated ⇒ aumenta confiança (mas não sozinho).\n\nConverta none/low/high em 0/0.5/1 e faça base = média(C,I,A).\nBoosts: +0.15 (rce), +0.10 (priv_esc), +0.05 (scope changed), +0.05 (unauthenticated).\nimpact_weight = clamp(base, 0, 1).\n\nSe o texto for genérico e curto → impact_weight = 0.5.\n\n3) Urgência de SLA (sla_weight)\n\nSe houver sla_days_remaining:\n\nd<0 (atraso): over = min(|d|/30,1); base = 0.8 + 0.2*over.\n\n0≤d≤7 → base=0.7; 8≤d≤30 → 0.5; d>30 → 0.3.\n\nSome componente de idade do ticket se sla_age disponível: +0.05 (>90d), +0.10 (>180d) (cap em +0.10).\n\nOpcional: ajuste leve por severidade se severity_weight disponível: multiplicador 0.8 + 0.4*severity_weight (cap em 1.0).\n\nSe não houver deadline/days_remaining mas houver sla_age: base=0.5 se >90d, senão 0.3.\n\nSe nada houver: sla_weight = 0.5.\n\nSempre clamp em [0,1].\n\n4) Idade (created) (age_weight)\n\nCalcule age_days = hojeUTC - created (dias).\n\nClasses: 0–7→0.25, 8–30→0.40, 31–90→0.60, 91–180→0.75, >180→0.90.\n\nSe active=false: age_weight=0.10.\n\nSe parsing falhar: age_weight=0.50.\n\nAjuste leve por severidade se disponível: multiplicador 0.9 + 0.2*severity_weight (cap em 1.0).\n\n5) Exposição à internet (internet_weight)\n\nMarque 1 somente se a description indicar claramente internet-facing: termos como internet-facing, public-facing, publicly accessible, exposed to the internet, public API/website, public IP, 0.0.0.0/0, FQDN externo, DMZ pública.\n\nMarque 0 se houver termos internal only, intranet, behind VPN, LAN, localhost, admin restrito à rede interna.\n\nCaso ambíguo/sem evidência: 0.\n\nPolítica de composição (inclui fallback quando nada é válido)\n\nPara cada fator f ∈ {severity, impact, sla, age, internet}:\n\nSe obteve valor válido da tool ou do fallback local: component_f = weight_f * value_f.\n\nSe ainda assim não há valor (situação rara): assuma component_f = weight_f (regra “somar só o peso do colaborador”).\n\nCalcule:\n\ntotal_w = soma dos pesos (após customizações)\nscore_raw = soma de component_f\nscore = clamp(score_raw / total_w, 0, 1)\narredonde para 4 casas decimais\n\nSaída\n\nResponda exclusivamente:\n{\n\"score\": <0.0000-1.0000> \n\"n8n_vulnerability_id\":{{ $json.n8n_vulnerability_id }},\n}\n\n\nQualquer outro conteúdo (texto, eco de dados, logs) é proibido. ",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        432,
+        16
+      ],
+      "id": "5943fded-366a-4514-a35f-5751f6170ef0",
+      "name": "Supervisor"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.myNewField = 1;\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        912,
+        16
+      ],
+      "id": "eded8f46-ff4c-4354-bb07-5312a18ce87b",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "operation": "update",
+        "tableId": "n8n_vulnerability",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "n8n_vulnerability_id",
+              "condition": "eq",
+              "keyValue": "={{ $('Get many rows').item.json.n8n_vulnerability_id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "score",
+              "fieldValue": "={{ $('Get many rows').item.json.score }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1184,
+        16
+      ],
+      "id": "c9af80bb-9e0a-4219-8e47-7c7e76bb1c61",
+      "name": "Update a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "vTwmC0TK3zcHY238",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "text": "={{ $fromAI('Prompt__User_Message_', ``, 'string') }}  \n  \"original\": {\n    \"n8n_vulnerability_id\":{{ $json.n8n_vulnerability_id }},\n    \"numerical_severity\": {{ $json.numerical_severity ?? $json.cvssv3_score ?? \"null\" }},\n    \"severity\": {{ $json.severity != null ? JSON.stringify($json.severity) : \"null\" }},\n    \"description\": {{ $json.description != null ? JSON.stringify($json.description) : \"null\" }},\n    \"sla_deadline\": {{ $json.sla_deadline != null ? JSON.stringify($json.sla_deadline) : \"null\" }},\n    \"sla_days_remaining\": {{ $json.sla_days_remaining ?? \"null\" }},\n    \"sla_age\": {{ $json.sla_age ?? \"null\" }},\n    \"created\": {{ ($json.created ?? $json.publish_date ?? $json.date) != null ? JSON.stringify($json.created ?? $json.publish_date ?? $json.date) : \"null\" }},\n    \"active\": {{ $json.active === true || $json.active === 'true' ? \"true\" : ($json.active === false || $json.active === 'false' ? \"false\" : \"null\") }},\n\n}um avaliador determinístico de severidade técnica de vulnerabilidades.\nEntrada: numerical_severity (pode ser CVSS 0–10 ou um nível 1–5) e severity (string como “Low/Medium/High/Critical” ou “S1…S5”).\nSaída: um JSON válido com:\n\nseverity_weight (número de 0.0 a 1.0),\n\nscale_detected (ex.: \"CVSS_0_10\", \"S1_S5\", \"QUAL_LABEL\"),\n\nmapping_basis (texto curto explicando a regra aplicada),\n\nconfidence (0–1, quão seguro está do mapeamento),\n\nnotes (curto; cite conflitos/resoluções).\n\nRegras de mapeamento (em ordem):\n\nSe parecer CVSS (0.0–10.0):\nseverity_weight = clamp(numerical_severity / 10, 0, 1).\nUse as faixas qualitativas CVSS para mapping_basis (None/Low/Medium/High/Critical).\n\nSe parecer escala 1–5 (S1–S5):\nMapeie: S1/Informational→0.05, S2/Low→0.20, S3/Medium→0.50, S4/High→0.80, S5/Critical→1.00.\nAceite entradas numéricas 1..5 ou rótulos “S1..S5”.\n\nSe vier só a severity textual (sem número):\n\nNone/Informational/Untriaged → 0.00\n\nLow → 0.20\n\nMedium → 0.50\n\nHigh → 0.80\n\nCritical → 1.00\n\nConflitos entre número e rótulo:\n\nSe o número for CVSS (0–10), priorize o número.\n\nSe o número for 1–5 e o rótulo for L/M/H/C, calcule ambos e use o maior (favor conservador).\n\nRegistre o conflito em notes.\n\nValores desconhecidos/nulos:\n\nSe ambos faltarem ou forem inválidos, retorne severity_weight = 0.50 (equivale a Medium), confidence = 0.2, e notes = \"fallback: unknown→Medium\".\n\nFormatação: responda apenas com JSON válido, sem texto extra.\n\nContexto conceitual: use a escala qualitativa do CVSS (FIRST/NVD) para ancorar L/M/H/C. Lembre-se: CVSS indica severidade, não risco completo; seu papel aqui é apenas fornecer o peso de severidade técnica (0–1) para compor o score final junto de outros fatores (ex.: EPSS, KEV, criticidade do negócio, exposição à internet).",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        -256,
+        240
+      ],
+      "id": "4d18a77c-6895-4aa1-8c82-50133f31f8f4",
+      "name": "numerical_severity e severity Specialist"
+    },
+    {
+      "parameters": {
+        "text": "=  \"original\": {\n    \"n8n_vulnerability_id\":{{ $json.n8n_vulnerability_id }},\n    \"numerical_severity\": {{ $json.numerical_severity ?? $json.cvssv3_score ?? \"null\" }},\n    \"severity\": {{ $json.severity != null ? JSON.stringify($json.severity) : \"null\" }},\n    \"description\": {{ $json.description != null ? JSON.stringify($json.description) : \"null\" }},\n    \"sla_deadline\": {{ $json.sla_deadline != null ? JSON.stringify($json.sla_deadline) : \"null\" }},\n    \"sla_days_remaining\": {{ $json.sla_days_remaining ?? \"null\" }},\n    \"sla_age\": {{ $json.sla_age ?? \"null\" }},\n    \"created\": {{ ($json.created ?? $json.publish_date ?? $json.date) != null ? JSON.stringify($json.created ?? $json.publish_date ?? $json.date) : \"null\" }},\n    \"active\": {{ $json.active === true || $json.active === 'true' ? \"true\" : ($json.active === false || $json.active === 'false' ? \"false\" : \"null\") }},\n\n}\nVocê é um avaliador determinístico de impacto técnico de vulnerabilidades, baseado nas dimensões Confidencialidade (C), Integridade (I) e Disponibilidade (A) do CVSS, considerando também indícios de escopo (atinge outros componentes além do alvo?). Utilize apenas o texto de entrada (impact, e opcionalmente description) para inferir o impacto plausível.\nSaída: JSON válido com:\n\nimpact_weight (0.0–1.0)\n\ncia: { \"confidentiality\": \"<none|low|high>\", \"integrity\": \"<none|low|high>\", \"availability\": \"<none|low|high>\" }\n\nscope: \"<unchanged|changed|unknown>\"\n\nsignals: lista de palavras-chave/achados (ex.: [\"rce\",\"priv_esc\",\"dos\",\"data_exfil\"])\n\nmapping_basis: explicação curta das regras aplicadas\n\nconfidence (0.0–1.0)\n\nnotes (curto; conflitos/ambiguidade)\n\nRegras\n\nMapeie CIA a partir de termos no texto (case-insensitive):\n\nConfidencialidade alta (C=high) se houver “data leak”, “information disclosure”, “credentials”, “tokens/secrets/keys”, “PII/PHI”, “session hijack”, “directory traversal reading”, “SSRF→metadata/credentials”.\n\nIntegridade alta (I=high) se “arbitrary write/modify/tamper”, “SQL injection (modifica dados)”, “command injection”, “code injection”, “file overwrite”, “privilege escalation” (implica alteração de estado).\n\nDisponibilidade alta (A=high) se “DoS/denial of service”, “service crash”, “resource exhaustion”, “hang”.\n\nSe o texto indicar efeito parcial/limitado, marque low; se não houver indicação, none.\n\nSinais especiais (aumentam o impacto global)\n\nrce (ex.: “remote code execution”, “execute arbitrary code”) → trate C/I/A como high.\n\npriv_esc (privilege escalation → root/admin/kernel/domain) → pelo menos I=high, geralmente C=high também.\n\nunauthenticated/“sem autenticação” → aumenta confiança e pode sugerir escopo mais amplo.\n\nEscopo (scope)\n\nchanged se o texto indicar impacto além do componente atacado (ex.: “sandbox escape”, “container breakout”, “hypervisor escape”, “supply chain”, XSS afetando o navegador do usuário). Senão unchanged. Se não der para inferir, unknown.\n\nCálculo do peso (0–1)\n\nConverta CIA para números: none=0.0, low=0.5, high=1.0.\n\nbase = média(C,I,A).\n\nBoosts: se rce → base += 0.15; se priv_esc → base += 0.10; se scope==\"changed\" → base += 0.05; se unauthenticated → base += 0.05.\n\nCap: impact_weight = min(1.0, base).\n\nConflitos/ambiguidade\n\nSe os sinais indicarem classes diferentes (ex.: só “DoS”), ajuste apenas A (não infle C/I).\n\nSe o texto for genérico/curto, retorne impact_weight moderado (≈0.5) e confidence baixo.\n\nFormatação\n\nResponda apenas com JSON válido, sem texto extra.\n\nContexto conceitual (baseado no CVSS): impactos são classificados por efeito em C/I/A e o escopo pode mudar quando o ataque ultrapassa o componente inicial (ex.: XSS afetando o navegador do usuário; escapes de sandbox/hipervisor). Use esse enquadramento para interpretar o texto de impacto.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        32,
+        240
+      ],
+      "id": "2a767653-1e64-4d35-942c-d2ed9c4bb9dc",
+      "name": "Impact e Description Specialist"
+    },
+    {
+      "parameters": {
+        "text": "={{ $fromAI('Prompt__User_Message_', ``, 'string') }} \n\n  \"original\": {\n    \"n8n_vulnerability_id\":{{ $json.n8n_vulnerability_id }},\n    \"numerical_severity\": {{ $json.numerical_severity ?? $json.cvssv3_score ?? \"null\" }},\n    \"severity\": {{ $json.severity != null ? JSON.stringify($json.severity) : \"null\" }},\n    \"description\": {{ $json.description != null ? JSON.stringify($json.description) : \"null\" }},\n    \"sla_deadline\": {{ $json.sla_deadline != null ? JSON.stringify($json.sla_deadline) : \"null\" }},\n    \"sla_days_remaining\": {{ $json.sla_days_remaining ?? \"null\" }},\n    \"sla_age\": {{ $json.sla_age ?? \"null\" }},\n    \"created\": {{ ($json.created ?? $json.publish_date ?? $json.date) != null ? JSON.stringify($json.created ?? $json.publish_date ?? $json.date) : \"null\" }},\n    \"active\": {{ $json.active === true || $json.active === 'true' ? \"true\" : ($json.active === false || $json.active === 'false' ? \"false\" : \"null\") }},\n\n}\nVocê é um avaliador determinístico de urgência (SLA) para vulnerabilidades.\nSeu trabalho: usar sla_deadline, sla_days_remaining e sla_age para calcular um peso 0–1 que represente prioridade por prazo (quanto mais vencida ou próxima do prazo, maior o peso). Opcionalmente, ajuste pela severidade técnica se severity_weight for fornecido.\n\nEntradas\n\nsla_deadline: string de data (qualquer formato comum), ou null.\n\nsla_days_remaining: inteiro (dias até o prazo; negativo = atrasado), ou null.\n\nsla_age: inteiro (dias desde a descoberta/criação), ou null.\n\nseverity_weight (opcional): número 0–1 da severidade técnica (se disponível de outro agente).\n\nSaída (retorne apenas JSON válido):\n\nsla_weight (0.0–1.0): prioridade por SLA (já ajustada por severidade se fornecida).\n\nstatus: \"overdue\" | \"due_7d\" | \"due_30d\" | \"comfortable\" | \"age_only\" | \"unknown\".\n\ncomputed: { \"deadline_iso\": \"<ISO8601|null>\", \"days_remaining\": <int|null>, \"age_days\": <int|null> }\n\ncomponents: { \"base\": <0–1>, \"overdue_component\": <0–1>, \"proximity_component\": <0–1>, \"age_component\": <0–1>, \"severity_multiplier\": <0.8–1.2> }\n\nmapping_basis: explicação curta da regra aplicada.\n\nconfidence (0–1).\n\nnotes: observações curtas (ex.: suposições de parsing de data).\n\nRegras\n\nNormalização dos insumos\n\nSe sla_days_remaining faltar mas sla_deadline existir, calcule days_remaining = floor((deadline - agora)/1 dia). Assuma agora em UTC (se a entrada trouxer timezone, respeite).\n\nAceite formatos de data usuais (YYYY-MM-DD, ISO8601, DD/MM/YYYY, etc.). Se inválida, trate como null.\n\nConsidere sla_age como dias desde a detecção/abertura (se não veio, null).\n\nComponentes de urgência (0–1)\n\nOverdue (atraso): se days_remaining < 0\n\nd_over = min(abs(days_remaining)/30, 1) (cap em 30+ dias).\n\noverdue_component = 0.8 + 0.2*d_over (min 0.8, max 1.0).\n\nProximidade de prazo: se days_remaining >= 0\n\n0 ≤ d ≤ 7 → proximity_component = 0.7\n\n8 ≤ d ≤ 30 → proximity_component = 0.5\n\nd > 30 → proximity_component = 0.3\n\nIdade (persistência do risco): se sla_age disponível\n\nage_component = 0.0 por padrão;\n\n> 90 dias → +0.05; > 180 dias → +0.10 (acumulativo até 0.10).\n\nSó aplique se ainda aberto/ativo (assuma que está aberto se nada disser o contrário).\n\nBase da urgência\n\nSe days_remaining < 0: base = overdue_component.\n\nSe days_remaining ≥ 0: base = proximity_component.\n\nSome age_component: base = min(1.0, base + age_component).\n\nStatus\n\noverdue se days_remaining < 0.\n\ndue_7d se 0 ≤ days_remaining ≤ 7.\n\ndue_30d se 8 ≤ days_remaining ≤ 30.\n\ncomfortable se days_remaining > 30.\n\nSe não houver days_remaining/deadline mas houver sla_age: age_only.\n\nSe nada disponível: unknown.\n\nFallbacks\n\nSe não há deadline nem days_remaining, mas sla_age existe:\n\nbase = 0.5 se sla_age > 90, senão 0.3.\n\nSe nada existir: base = 0.5, confidence = 0.2, status = \"unknown\".\n\nAjuste por severidade (opcional)\n\nSe severity_weight for fornecido (0–1):\n\nseverity_multiplier = 0.8 + 0.4*severity_weight (varia de 0.8 a 1.2).\n\nsla_weight = min(1.0, base * severity_multiplier).\n\nCaso contrário: severity_multiplier = 1.0 e sla_weight = base.\n\nFormatação\n\nRetorne somente JSON.\n\nNão invente datas; quando inferir, explique em notes.\n\nClamp todos os valores numéricos ao intervalo 0–1 quando aplicável.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        320,
+        240
+      ],
+      "id": "99976f98-fe1a-474b-a002-85cc31ba6022",
+      "name": "sla_deadline, sla_days_remaining e sla_age Specialist"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        608,
+        240
+      ],
+      "id": "e79bcda5-e439-4dfd-b55b-193c5f61bf55",
+      "name": "Calculator"
+    },
+    {
+      "parameters": {
+        "text": "={{ $fromAI('Prompt__User_Message_', ``, 'string') }} \n\n  \"original\": {\n    \"n8n_vulnerability_id\":{{ $json.n8n_vulnerability_id }},\n    \"numerical_severity\": {{ $json.numerical_severity ?? $json.cvssv3_score ?? \"null\" }},\n    \"severity\": {{ $json.severity != null ? JSON.stringify($json.severity) : \"null\" }},\n    \"description\": {{ $json.description != null ? JSON.stringify($json.description) : \"null\" }},\n    \"sla_deadline\": {{ $json.sla_deadline != null ? JSON.stringify($json.sla_deadline) : \"null\" }},\n    \"sla_days_remaining\": {{ $json.sla_days_remaining ?? \"null\" }},\n    \"sla_age\": {{ $json.sla_age ?? \"null\" }},\n    \"created\": {{ ($json.created ?? $json.publish_date ?? $json.date) != null ? JSON.stringify($json.created ?? $json.publish_date ?? $json.date) : \"null\" }},\n    \"active\": {{ $json.active === true || $json.active === 'true' ? \"true\" : ($json.active === false || $json.active === 'false' ? \"false\" : \"null\") }},\n\n}\n\nVocê é um avaliador determinístico de idade de vulnerabilidade.\nSua função é transformar a data de detecção (created) em um peso de idade de 0.0 a 1.0, onde mais antigo ⇒ maior urgência por envelhecimento (backlog persistente).\nVocê pode receber opcionalmente now_iso (data/hora de referência), severity_weight (0–1) e active (boolean) para refino.\n\nEntradas\n\ncreated: string de data (qualquer formato comum; preferir ISO 8601).\n\nnow_iso (opcional): string ISO de “agora”; se ausente, assuma agora em UTC.\n\nseverity_weight (opcional): 0–1 vindo do agente de severidade técnica (para um ajuste leve).\n\nactive (opcional): boolean; se false, a vulnerabilidade não está ativa.\n\nSaída (retorne apenas JSON válido)\n\nage_weight (0.0–1.0)\n\nstatus_age: \"new\" | \"recent\" | \"stale\" | \"old\" | \"ancient\" | \"closed\" | \"unknown\"\n\ncomputed: { \"created_iso\": \"<ISO|null>\", \"now_iso\": \"<ISO>\", \"age_days\": <int|null> }\n\ncomponents: { \"base\": <0–1>, \"severity_multiplier\": <0.9–1.1> }\n\nmapping_basis: explicação curta da regra aplicada\n\nconfidence (0.0–1.0)\n\nnotes: observações curtas (ex.: parsing, suposições)\n\nRegras\n\nParsing & cálculo\n\nParseie created; se não tiver timezone, trate como UTC.\n\nage_days = floor((now - created)/1 dia). Se parsing falhar, age_days = null.\n\nClassificação por idade\n\nSe active == false → status_age = \"closed\" e base = 0.10.\n\nSe age_days é null → status_age = \"unknown\" e base = 0.50.\n\nCaso contrário:\n\n0–7 dias → status_age=\"new\", base=0.25\n\n8–30 dias → status_age=\"recent\", base=0.40\n\n31–90 dias → status_age=\"stale\", base=0.60\n\n91–180 dias → status_age=\"old\", base=0.75\n\n>180 dias → status_age=\"ancient\", base=0.90\n\nAjuste leve por severidade (opcional)\n\nSe severity_weight for fornecido (0–1):\n\nseverity_multiplier = 0.9 + 0.2 * severity_weight (varia de 0.9 a 1.1)\n\nage_weight = min(1.0, base * severity_multiplier)\n\nSe não houver severity_weight: severity_multiplier = 1.0 e age_weight = base.\n\nFormatação\n\nRetorne somente JSON.\n\nFaça clamp de todos os valores ao intervalo 0–1 quando aplicável.\n\nInclua sempre computed.created_iso, computed.now_iso e computed.age_days.\n\nObservação: este peso de idade não substitui SLA; ele complementa a prioridade ao evitar que vulnerabilidades antigas permaneçam eternamente no backlog.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        736,
+        240
+      ],
+      "id": "70d026dc-1fe5-4f46-9475-e41725078917",
+      "name": "Data Specialist"
+    },
+    {
+      "parameters": {
+        "text": "={{ $fromAI('Prompt__User_Message_', ``, 'string') }} \n\n  \"original\": {\n    \"n8n_vulnerability_id\":{{ $json.n8n_vulnerability_id }},\n    \"numerical_severity\": {{ $json.numerical_severity ?? $json.cvssv3_score ?? \"null\" }},\n    \"severity\": {{ $json.severity != null ? JSON.stringify($json.severity) : \"null\" }},\n    \"description\": {{ $json.description != null ? JSON.stringify($json.description) : \"null\" }},\n    \"sla_deadline\": {{ $json.sla_deadline != null ? JSON.stringify($json.sla_deadline) : \"null\" }},\n    \"sla_days_remaining\": {{ $json.sla_days_remaining ?? \"null\" }},\n    \"sla_age\": {{ $json.sla_age ?? \"null\" }},\n    \"created\": {{ ($json.created ?? $json.publish_date ?? $json.date) != null ? JSON.stringify($json.created ?? $json.publish_date ?? $json.date) : \"null\" }},\n    \"active\": {{ $json.active === true || $json.active === 'true' ? \"true\" : ($json.active === false || $json.active === 'false' ? \"false\" : \"null\") }},\n\n}\n\nVocê é um classificador determinístico de exposição à internet baseado exclusivamente no campo description (texto livre).\nTarefa: identificar se a vulnerabilidade afeta um serviço publicamente acessível pela internet (internet-facing).\nSaída: apenas JSON válido com:\n\ninternet_exposed: true ou false\n\nweight: 1 se exposta, senão 0\n\nsignals: lista das palavras/indícios que suportam a decisão\n\nconfidence: 0–1 (quão forte é a evidência)\n\nmapping_basis: explicação curta da regra aplicada\n\nnotes: observações curtas (ex.: ambiguidade)\n\nRegras (ordem de prioridade)\n\nSinais POSITIVOS explícitos → weight=1 (confidence alto)\nPalavras/expressões (case-insensitive) que indicam exposição pública inequívoca:\n\n“internet-facing”, “public-facing”, “publicly accessible/available”, “externally reachable”, “exposed to the internet”, “accessible from the internet”\n\n“DMZ”, “edge”, “perimeter”, “gateway”, “reverse proxy” com indicação de acesso público\n\n“public web server”, “public website”, “public API endpoint”, “SaaS portal”, “cloud endpoint (public)”\n\nDomínios/FQDNs explícitos (ex.: example.com) ou URLs http(s) externas (sem “intranet”/“internal”)\n\nmenções a “open to the internet”, “public IP” ou “0.0.0.0/0” em regras de acesso\n\nSinais NEGATIVOS explícitos → weight=0 (confidence alto)\n\n“internal only”, “intranet”, “LAN”, “requires VPN”, “behind VPN”, “air-gapped”, “localhost/127.0.0.1”, “management interface bound to internal network”, “accessible only from internal addresses”, “admin panel restricted to intranet”\n\nHeurísticas (não decisivas, apenas reforço — não use sozinhas para marcar 1)\n\n“unauthenticated access”, “remote”, “network”, “AV:N” não implicam internet por si só.\n\n“HTTP/HTTPS/SSH port” sem menção de público externo não basta.\n\nAmbiguidade / ausência de evidência\n\nSe não houver evidência clara de público externo, retorne internet_exposed=false, weight=0 e confidence baixo.\n\nDocumente a dúvida em notes.\n\nFormatação\n\nResponda apenas com JSON válido.\n\nNão invente fatos; baseie-se só no texto de description.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        1024,
+        240
+      ],
+      "id": "5f371c2d-4767-4bfa-b120-990cc0810b6c",
+      "name": "Description-Internet Specialist"
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "operation": "getAll",
+        "tableId": "n8n_vulnerability",
+        "limit": 2
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        64,
+        16
+      ],
+      "id": "5559e287-f0b7-4448-8ba0-66a2dc4bd859",
+      "name": "Get many rows",
+      "credentials": {
+        "supabaseApi": {
+          "id": "vTwmC0TK3zcHY238",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        16
+      ],
+      "id": "ab859d59-a287-424d-911f-230c0aa15d87",
+      "name": "When clicking ‘Execute workflow’"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Supervisor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Impact e Description Specialist",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "sla_deadline, sla_days_remaining e sla_age Specialist",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Data Specialist",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Description-Internet Specialist",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "numerical_severity e severity Specialist",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supervisor": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Update a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "numerical_severity e severity Specialist": {
+      "ai_tool": [
+        [
+          {
+            "node": "Supervisor",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Impact e Description Specialist": {
+      "ai_tool": [
+        [
+          {
+            "node": "Supervisor",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sla_deadline, sla_days_remaining e sla_age Specialist": {
+      "ai_tool": [
+        [
+          {
+            "node": "Supervisor",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator": {
+      "ai_tool": [
+        [
+          {
+            "node": "Supervisor",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data Specialist": {
+      "ai_tool": [
+        [
+          {
+            "node": "Supervisor",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Description-Internet Specialist": {
+      "ai_tool": [
+        [
+          {
+            "node": "Supervisor",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many rows": {
+      "main": [
+        [
+          {
+            "node": "Supervisor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get many rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "6c413c8f-9023-4bd4-bcfc-b6174c60f3c0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ba5a136af77c0dac0131410777ca7667863c4b4d5b3a188b8be6d519e856c249"
+  },
+  "id": "dTVFUhyqxB5nmjtR",
+  "tags": []
+}
