@@ -140,6 +140,7 @@ const KanbanFrame = () => {
             console.log("remove from in_dev")
           }else {
             await deleteReadyItem(id)
+            await subtractPointsFromUser(session.user.id, item.vulnerability.score === null ? 0 : item.vulnerability.score)
             console.log("remove from ready")
           }
           break
