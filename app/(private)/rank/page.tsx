@@ -20,6 +20,6 @@ export function initials(name: string) {
 
 export default async function Page() {
   const users = await getTopScorers(50)
-  console.log(users)
+
   return <UserRankingPage users={users} />
 }

@@ -1,4 +1,4 @@
-import { Crown, LayoutDashboard, SquareKanban } from "lucide-react"
+import { Crown, LayoutDashboard, Logs, SquareKanban } from "lucide-react"
 
 import {
   Sidebar,
@@ -26,6 +26,11 @@ const items = [
     title: "Dashboard",
     url: "/dashboard",
     icon: LayoutDashboard,
+  },
+  {
+    title: "Backlog",
+    url: "/backlog",
+    icon: Logs,
   },
   {
     title: "Rank",
