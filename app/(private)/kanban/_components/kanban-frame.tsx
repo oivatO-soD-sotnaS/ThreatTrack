@@ -53,21 +53,21 @@ const KanbanFrame = () => {
         // Transform the data to match kanban structure
         const transformedItems: KanbanItem[] = [
           ...todoItems.map(item => ({
-            id: `todo_${item.id}`,
+            id: `${item.id}`,
             name: item.n8n_vulnerability.title || item.vulnerabilityId,
             vulnerabilityId: item.vulnerabilityId,
             vulnerability: item.n8n_vulnerability,
             column: 'todo'
           })),
           ...inDevItems.map(item => ({
-            id: `dev_${item.id}`,
+            id: `${item.id}`,
             name: item.n8n_vulnerability.title || item.vulnerabilityId,
             vulnerabilityId: item.vulnerabilityId,
             vulnerability: item.n8n_vulnerability,
             column: 'in_development'
           })),
           ...readyItems.map(item => ({
-            id: `ready_${item.id}`,
+            id: `${item.id}`,
             name: item.n8n_vulnerability.title || item.vulnerabilityId,
             vulnerabilityId: item.vulnerabilityId,
             vulnerability: item.n8n_vulnerability,
@@ -129,8 +129,7 @@ const KanbanFrame = () => {
     ) {
       if(!session) return
 
-      const lastChar = item.id.charAt(item.id.length - 1);
-      const id = parseInt(lastChar, 10);
+      const id = parseInt(item.id, 10);
 
       switch(destination.droppableId) {
         case "todo":
@@ -186,6 +185,7 @@ const KanbanFrame = () => {
     );
   }
 
+  console.log(items)
   return (
     <div className="container mx-auto px-4">
       <h1 className="text-2xl md:text-3xl font-bold tracking-tight">

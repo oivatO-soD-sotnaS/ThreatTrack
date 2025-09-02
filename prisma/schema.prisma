@@ -140,9 +140,12 @@ model n8n_vulnerability {
   sla_age              BigInt?
   n8n_vulnerability_id String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   score                Float?
-  in_development_item  in_development_item?
-  ready_item           ready_item?
-  to_do_item           to_do_item?
+
+  ready_item ready_item[]
+
+  to_do_item to_do_item[]
+
+  in_development_item in_development_item[]
 }
 
 model ready_item {
